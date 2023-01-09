@@ -19,7 +19,7 @@ data Person = Person
   { firstName :: String
   , lastName :: String
   , age :: Int
-  }
+  } deriving(Show)
 
 personFromTuple :: (String, String, Int) -> Person
 personFromTuple (fName, lName, age) = Person fName lName age
@@ -62,11 +62,11 @@ data GovDirectory a = GovDirectory {
   interimMayor :: Maybe a,
   cabinet :: M.Map String a,
   councilMembers :: [a]
-}
+} deriving(Show)
 
 instance Functor GovDirectory where
   -- TODO: Write out this functor instance!
-  fmap f oldDirectory = undefined
+  fmap f oldDirectory = GovDirectory (f (mayor oldDirectory)) (fmap f (interimMayor oldDirectory)) (fmap f (cabinet oldDirectory)) (fmap f (councilMembers oldDirectory)) 
 
 oldDirectory :: GovDirectory (String, String, Int)
 oldDirectory = GovDirectory
@@ -82,4 +82,4 @@ oldDirectory = GovDirectory
 -- TODO: How can we do this in general terms, since we have
 --       a Functor instance?
 newDirectory :: GovDirectory Person
-newDirectory = undefined
+newDirectory = fmap personFromTuple oldDirectory
